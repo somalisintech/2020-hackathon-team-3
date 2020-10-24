@@ -4,6 +4,8 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 
 const db = require("./core/db")
+const newsCron = require("./news-cron")
+
 
 
 // Initialize express app
@@ -20,6 +22,7 @@ db.on("error", () => console.log({ message: "MongoDB Connection has died. We did
 
 db.once("open", async () => {
     console.log('We out here')
+    newsCron.run()
 })
 
 app.listen(port, () => console.log(`server started on port ${port}`))
