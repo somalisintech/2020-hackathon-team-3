@@ -1,6 +1,9 @@
 const parser = require("xml2json");
 const fs = require("promise-fs");
 const axios = require("axios");
+const headlineRegex = /"headLine": "\s*(.*?)\s*",/g;
+const descriptionRegex = /"description": "\s*(.*?)\s*",/g;
+const articleRegex = /"articleBody": \s*(.*?)\s*<\/div>/g;
 
 function RSS2JSON() {
   try {
@@ -29,59 +32,35 @@ function returnURLS(json) {
 }
 
 async function fetchNews(urls) {
-  try {
-    let content = [];
-    for (let i of urls) {
-      axios.get(i).then(console.log(i));
-      const headlineRegex = /"headLine": "\s*(.*?)\s*",/g;
-      const descriptionRegex = /"description": "\s*(.*?)\s*",/g;
-      const articleRegex = /"articleBody": \s*(.*?)\s*<\/div>/g;
-      const headline = i.data.match(headlineRegex);
-      const description = i.data.match(descriptionRegex);
-      const article = i.data.match(articleRegex);
-      content.push({
-        headline: headline,
-        description: description,
-        article: article,
-      });
+  return new Promise(async (resolve, reject) => {
+    try {
+      let content = [];
+      for (let i of urls) {
+        await axios.get(i).then((response) => {
+          const headline = response.data.match(headlineRegex);
+          const description = response.data.match(descriptionRegex);
+          const article = response.data.match(articleRegex);
+          content.push({
+            headline: headline,
+            description: description,
+            article: article,
+          });
+        });
+      }
+      resolve(content);
+    } catch (error) {
+      console.log(error);
+      reject(error);
     }
-    return content;
-  } catch (error) {}
+  });
 }
 
-function test(a) {
-  try {
-    axios
-      .get(a)
-      .then((i) => {
-        const headlineRegex = /"headLine": "\s*(.*?)\s*",/g;
-        const descriptionRegex = /"description": "\s*(.*?)\s*",/g;
-        const articleRegex = /"articleBody": \s*(.*?)\s*"\n}/g;
-        const headline = i.data.match(headlineRegex);
-        const description = i.data.match(descriptionRegex);
-        const article = i.data.match(articleRegex);
-        console.log("\n");
-        console.log("ARTICLE");
-        console.log(a);
-        console.log(headline);
-        console.log(description);
-        console.log(article);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  } catch (error) {
-    console.log(error);
-  }
-}
 async function run() {
   let json = await RSS2JSON();
   let urls = returnURLS(json);
   // console.log(urls);
-  // fetchNews(urls);
-  for (let a of urls) {
-    test(a);
-  }
+  fetchNews(urls).then((x) => {
+    console.log(x);
+  });
 }
-
 run();
