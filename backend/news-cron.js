@@ -11,49 +11,42 @@ let parser = new Parser({
     }
 });
 
-const htmlparser2 = require("htmlparser2");
-
-
-
 const rssURL = 'https://www.gov.uk/search/all.atom?content_purpose_supergroup%5B%5D=news_and_communications&level_one_taxon=5b7b9532-a775-4bd2-a3aa-6ce380184b6c'
 
-const rp = require('request-promise');
-
-
 const run = async () => {
-    //cron.schedule("* 1 * * *", async () => {
-    getAnnouncements()
-    //scrape()
-    //})
+    cron.schedule("* 1 * * *", async () => {
+        await updateAnnouncements()
+    })
 
 }
 
-/* const scrape = async () => {
-    const url = 'https://www.gov.uk/government/news/sewage-signals-early-warning-of-coronavirus-outbreaks'
-    const html = await rp(url)
+const getArticles = async (newArticles) => {
 
-    let inScriptElement = false;
-    const parser = new htmlparser2.Parser({
-        onopentag(name, attribs) {
-            if (name === "script" && attribs.type === "application/ld+json") {
-                inScriptElement = true;
+    for await (let article of newArticles) {
+        let url = article?.link
+        let endOfUrl = url.replace('https://www.gov.uk/', '')
+        let articleBody = await GET({ url: `https://www.gov.uk/api/content/${endOfUrl}` }, (err, response) => {
+            if (err) throw err
+            return response
+        })
+        _.extend(article, {
+            title: articleBody?.title,
+            updated_at: articleBody?.updated_at,
+            document_type: articleBody?.document_type,
+            details: articleBody?.details,
+            image: articleBody?.details?.image?.url,
+            story: {
+                title: articleBody?.title,
+                description: articleBody?.description,
+                body: articleBody?.details?.body,
             }
-        },
-        ontext(text) {
-            if (inScriptElement === true) console.log(text);
-        },
-        onclosetag(tagname) {
-            if (tagname === "script") {
-                console.log("That's it?!");
-            }
-        },
-    });
+        })
+    }
 
-    parser.write(html);
-    parser.end();
-} */
+    return newArticles
+}
 
-const getAnnouncements = async () => {
+const updateAnnouncements = async () => {
     try {
 
         const feed = await parser.parseURL(rssURL);
@@ -64,17 +57,24 @@ const getAnnouncements = async () => {
 
 
         const newIds = _.difference(articleIds, storedIds)
-        const newArticles = _.filter(feed?.items, (announcement) => {
+        const newArticleSummaries = _.filter(feed?.items, (announcement) => {
             return _.contains(newIds, announcement?.id)
         })
 
-        //let momohamedFunction = (x) => console.log(x)
-        // const articlesWithText = mohamedFunction(newArticles)
-        //const translatedFeed = _.map(feed,)
-        console.log(newArticles)
-        //await Announcements.insertMany(feed?.items)
-        let dog = `"<div class=\\"govspeak\\"><p>These documents are directions under section 129(6) of the Apprenticeships, Skills, Children and Learning Act 2009 about calculating students' exam results during the coronavirus (COVID-19) outbreak.</p>\\n\\n<p>This direction follows a previous announcement about <a href=\\"https://www.gov.uk/government/news/further-details-on-exams-and-grades-announced\\" class=\\"govuk-link\\">cancelling exams</a>.</p>\\n\\n<p>Ofqual guidance on arrangements for <a href=\\"https://www.gov.uk/government/publications/gcses-as-and-a-level-awarding-summer-2020\\" class=\\"govuk-link\\">awarding qualification grades in summer 2020</a> is available.</p>\\n\\n</div>'`
-        await translateText(dog /* _.pluck(newArticles, 'title') */)
+        let newArticles = await getArticles(newArticleSummaries)
+
+        for await (let article of newArticles) {
+
+            _.extend(article, {
+                somaliStory: {
+                    title: await translateText(article?.story?.title),
+                    description: await translateText(article?.story?.description),
+                    body: await translateText(article?.story?.body)
+                }
+            })
+        }
+
+        await Announcements.insertMany(newArticles)
 
     } catch (error) {
         console.log(error)
