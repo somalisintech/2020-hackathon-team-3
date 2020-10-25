@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import HomeScreen, { screenOptions as homeScreenOptions } from '../screens/HomeScreen';
 import NewsScreen, { screenOptions as newsScreenOptions } from '../screens/NewsScreen';
-
+import NotificationScreen, { screenOptions as notificationScreenOptions } from '../screens/NotificationScreen';
 
 const StackNavigator = createStackNavigator();
 
@@ -13,6 +13,7 @@ export const Navigator = () => {
         <StackNavigator.Navigator screenOptions={navOptions}>
             <StackNavigator.Screen name="Home" component={HomeScreen} options={homeScreenOptions} />
             <StackNavigator.Screen name="News" component={NewsScreen} options={newsScreenOptions} />
+            <StackNavigator.Screen name="Notification" component={NotificationScreen} options={notificationScreenOptions} />
 
         </StackNavigator.Navigator>
     );
