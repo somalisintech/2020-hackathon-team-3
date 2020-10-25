@@ -4,6 +4,7 @@ import {
   ScrollView,
   StyleSheet,
   Dimensions,
+  Image,
   TouchableOpacity,
   Text,
 } from 'react-native';
@@ -14,10 +15,17 @@ import HTML from 'react-native-render-html';
 const NewsScreen = ({route, navigation}) => {
   const {newsTitle, newsCategory, newsContent, news} = route.params;
   const [language, setLanguage] = useState('Somali');
-
+  console.log(news?.image);
   return (
     <View style={styles.screen}>
-      <View style={{flex: 1, backgroundColor: '#FDD670'}} />
+      <View style={{flex: 1}}>
+        <Image
+          style={{height: 250, width: 250}}
+          source={{
+            uri: news?.image,
+          }}
+        />
+      </View>
       <DropDownPicker
         items={[
           {label: 'Somali', value: 'Somali'},
