@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, FlatList, TouchableOpacity, Text, SafeAreaView, Image } from 'react-native';
+import { View, StyleSheet, FlatList, TouchableOpacity, Text, SafeAreaView, Image, ScrollView} from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { RFPercentage } from 'react-native-responsive-fontsize';
 
@@ -8,6 +8,7 @@ import Flags from '../components/Flags';
 import NewsCard from '../components/NewsCard';
 import Margin from '../components/Margin';
 import NavHeader from '../components/NavHeader';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 
 const data = [
@@ -49,13 +50,20 @@ const HomeScreen = ({ navigation }) => {
         <SafeAreaView style={styles.screen}>
             <View style={styles.headerView}>
                 <Text style={styles.headerText}>Announcements</Text>
-                <TouchableOpacity onPress={() => navigation.navigate('Notification')}>
-                    <FontAwesomeIcon color="black" icon="bell" size={RFPercentage(3.6)} />
-                </TouchableOpacity>
+
             </View>
             {/* <NavHeader backPress={()=> navigation.goBack()}/> */}
-            <Flags />
-            <View style={{ padding: '2%', marginBottom: '10%' }}>
+            <DropDownPicker
+                items={[
+                    {label: 'English', value: 'item1'},
+                    {label: 'Somali', value: 'item2'},
+                ]}
+                defaultIndex={1}
+                defaultValue="item1"
+                containerStyle={{height: 40}}
+                onChangeItem={item => console.log(item.label, item.value)}
+            />
+            <ScrollView style={{ padding: '2%', marginBottom: '10%' }}>
                 <FlatList
                     data={data}
                     keyExtractor={item => item.id}
@@ -79,7 +87,7 @@ const HomeScreen = ({ navigation }) => {
 
                     )}
                 />
-            </View>
+            </ScrollView>
 
         </SafeAreaView>
 
@@ -87,26 +95,42 @@ const HomeScreen = ({ navigation }) => {
 
 };
 
+// onPress={() => navigation.navigate('Notification')
 export const screenOptions = {
-    headerShown: false
+
+  headerStyle: {
+      backgroundColor: '#FDD670',
+      shadowColor: 'transparent'
+    },
+  title: '',
+  headerShown: true,
+  headerRight:   () => (
+    <TouchableOpacity >
+        <FontAwesomeIcon color="" icon="bell" size={RFPercentage(3)} />
+    </TouchableOpacity>
+  ),
 
 };
+
+
 
 const styles = StyleSheet.create({
     screen: {
         flex: 1,
+        backgroundColor:'white'
     },
     headerView: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingHorizontal: '2%'
+        paddingHorizontal: '2%',
+        paddingVertical: '5%'
 
     },
     headerText: {
-        fontSize: RFPercentage(4),
-        fontWeight: 'bold',
-        fontFamily: 'Inter-Bold'
+        fontSize: RFPercentage(5.5),
+        alignItems: 'center',
+        fontFamily: 'DMSerifDisplay-Regular',
 
     },
     flatlistView: {

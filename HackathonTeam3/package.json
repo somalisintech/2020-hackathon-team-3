@@ -20,6 +20,7 @@
     "@react-navigation/stack": "^5.9.3",
     "react": "16.13.1",
     "react-native": "0.63.3",
+    "react-native-dropdown-picker": "^3.7.0",
     "react-native-gesture-handler": "^1.8.0",
     "react-native-reanimated": "^1.13.1",
     "react-native-responsive-fontsize": "^0.4.3",

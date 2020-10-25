@@ -1,21 +1,26 @@
 import React from 'react';
 import { View, ScrollView, StyleSheet, TouchableOpacity, Text} from 'react-native';
 import TextComponent from '../components/TextComponent';
+import DropDownPicker from 'react-native-dropdown-picker';
 const NewsScreen = ({route, navigation}) => {
-    const { newsTitle , newsCategory, newsContent, news} = route.params;
+const { newsTitle , newsCategory, newsContent, news} = route.params;
+
 
     return (
         <View style={styles.screen}>
         <View style={{flex: 1,backgroundColor: '#FDD670'}} />
+        <DropDownPicker
+            items={[
+                {label: 'English', value: 'item1'},
+                {label: 'Somali', value: 'item2'},
+            ]}
+            defaultIndex={1}
+            defaultValue="item1"
+            containerStyle={{height: 40}}
+            onChangeItem={item => console.log(item.label, item.value)}
+        />
         <View style={{flex: 3, paddingHorizontal: '6%', }}>
-          <TextComponent
-              title={'Translate toggle section'}
-              colour={'green'}
-              size={15}
-              align={'right'}
-              padding={'6%'}
-              weight={'bold'}
-          />
+
           <TextComponent
               title={newsTitle}
               colour={'black'}
@@ -61,6 +66,7 @@ export const screenOptions = {
       backgroundColor: '#FDD670',
       shadowColor: 'transparent'
     },
+  title: '',
   headerShown: true,
 
 };
@@ -68,7 +74,7 @@ export const screenOptions = {
 const styles = StyleSheet.create({
     screen: {
         flex: 1,
-position:'relative',
+        backgroundColor: 'white'
     }
 });
 
