@@ -6,8 +6,12 @@ const AnnouncementsSchema = new mongoose.Schema({
     pubDate: String,
     id: String,
     isoDate: String,
-    summary: String,
-    article: { type: mongoose.Schema.Types.ObjectId, }
+    updated_at: String,
+    document_type: String,
+    details: mongoose.Schema.Types.Mixed,
+    image: String,
+    story: mongoose.Schema.Types.Mixed,
+    somaliStory: mongoose.Schema.Types.Mixed,
 }, { timestamps: true })
 
 module.exports = AnnouncementsSchema
