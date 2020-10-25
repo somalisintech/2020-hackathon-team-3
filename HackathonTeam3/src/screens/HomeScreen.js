@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
 import NewsCard from '../components/NewsCard';
 
@@ -39,7 +38,6 @@ const HomeScreen = ({ navigation }) => {
             return (
                 <View style={{paddingRight: 7}}>
                     <TouchableOpacity onPress={() => { }}>
-                        <FontAwesomeIcon color="grey" icon={['fas', "bell"]} size={25} />
                     </TouchableOpacity>
                 </View>
             );
@@ -48,13 +46,11 @@ const HomeScreen = ({ navigation }) => {
             return (
                 <View style={{paddingLeft: 7}}>
                     <TouchableOpacity onPress={() => { }}>
-                        <FontAwesomeIcon color="grey" icon={['fas', "cog"]} size={25} />
                     </TouchableOpacity>
                 </View>
             );
         }
     });
-
     return (
         <View style={styles.screen}>
             <FlatList
@@ -66,7 +62,11 @@ const HomeScreen = ({ navigation }) => {
                             title={item.title}
                             body={item.body}
                             newsPress={() => navigation.navigate('News', {
-                                news: item
+                                news: item,
+                                newsCategory:'GOV.UK',
+                                newsTitle:item.title,
+                                newsContent:item.body,
+                                newsDate:'4 days ago',
                             })}
                         />
                     </View>
@@ -78,9 +78,9 @@ const HomeScreen = ({ navigation }) => {
 
 };
 
-// export const screenOptions = {
-//     headerTitle: "Latest News"
-// };
+export const screenOptions = {
+    headerTitle: "Latest News"
+};
 
 const styles = StyleSheet.create({
     screen: {
@@ -92,6 +92,5 @@ const styles = StyleSheet.create({
 
     }
 });
-
 
 export default HomeScreen;
