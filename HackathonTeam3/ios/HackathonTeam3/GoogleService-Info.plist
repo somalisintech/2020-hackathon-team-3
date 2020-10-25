@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>912611096411-dbmvf33kgdtkobo2eh8mhvdrvke4i467.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.912611096411-dbmvf33kgdtkobo2eh8mhvdrvke4i467</string>
+	<key>API_KEY</key>
+	<string>AIzaSyD2a0KdwilSpJtH4k-gx8Z7jZeExCjhSEU</string>
+	<key>GCM_SENDER_ID</key>
+	<string>912611096411</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.somalisintech.team3</string>
+	<key>PROJECT_ID</key>
+	<string>team3-3d8d6</string>
+	<key>STORAGE_BUCKET</key>
+	<string>team3-3d8d6.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:912611096411:ios:9e1130a99328b7252d8c7e</string>
+	<key>DATABASE_URL</key>
+	<string>https://team3-3d8d6.firebaseio.com</string>
+</dict>
+</plist>
