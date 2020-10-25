@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, FlatList, TouchableOpacity, Text, SafeAreaView, Image } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -63,12 +64,16 @@ const HomeScreen = ({ navigation }) => {
                     renderItem={({ item }) => (
                         <View style={styles.flatlistView}>
                             <NewsCard
-                                title={item.title}
-                                body={item.body}
-                                newsPress={() => navigation.navigate('News', {
-                                    news: item
-                                })}
-                            />
+                              title={item.title}
+                              body={item.body}
+                              newsPress={() => navigation.navigate('News', {
+                                  news: item,
+                                  newsCategory:'GOV.UK',
+                                  newsTitle:item.title,
+                                  newsContent:item.body,
+                                  newsDate:'4 days ago',
+                              })}
+                        />
                             <Margin size={2} />
                         </View>
 
@@ -77,12 +82,14 @@ const HomeScreen = ({ navigation }) => {
             </View>
 
         </SafeAreaView>
+
     );
 
 };
 
 export const screenOptions = {
     headerShown: false
+
 };
 
 const styles = StyleSheet.create({
@@ -105,6 +112,5 @@ const styles = StyleSheet.create({
     flatlistView: {
     }
 });
-
 
 export default HomeScreen;
