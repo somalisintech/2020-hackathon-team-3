@@ -1,0 +1,248 @@
+---
+title: "Market_Research"
+output: 
+  html_document:
+    code_folding: hide
+--- 
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+
+```{r libs, message=F, warning=F}
+library(ggplot2)
+library(reshape2)
+```
+
+
+```{r read data}
+setwd("C:/Users/user/Desktop/2020-hackathon-team-3/MarketResearch")
+dat <- read.csv("Survey for the effectiveness of communication of UK government guidance to the Somali community (Responses) - Form Responses 1.csv", header = T, stringsAsFactors = F)
+```
+
+
+During the COVID-19 pandemic, many different news have been circulating regarding government guidance. The UK government have been criticised for its poor communication. We want to investigate how the UK Somali community receives new government guidance and whether poor communication from the government exists as well as addressing this issue.
+
+We sent out a survey to be completed in a short time,`r nrow(dat)` people responded across different age groups.
+
+
+```{r A1, message=F, warning=F}
+col <- 2
+h1 <- "Age range"
+tbl <- as.data.frame(table(dat[,col]))
+colnames(tbl) <- c(h1, "count")
+tbl[,1] <- as.character(tbl[,1])
+
+png("Q1 Answers.png")
+ggplot(tbl, aes(x = `Age range`, y = count, fill = "#56B4E9")) +
+  geom_col(position="dodge") +
+  scale_fill_manual(values = rep("#56B4E9",4)) +
+  theme_bw() + 
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
+  theme(legend.position = "none") +
+  labs(title = "Age groups",
+       fill = "Age group", x = " ")+
+  theme(plot.title = element_text(hjust = 0.5))
+dev.off()
+
+ggplot(tbl, aes(x = `Age range`, y = count, fill = "#56B4E9")) +
+  geom_col(position="dodge") +
+  scale_fill_manual(values = rep("#56B4E9",4)) +
+  theme_bw() + 
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
+  theme(legend.position = "none") +
+  labs(title = "Age groups",
+       fill = "Age group", x = " ")+
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+
+```{r A2, message=F, warning=F}
+cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73")
+
+png("Q2 Answers.png")
+ggplot(dat, aes(x = dat[,3], fill = dat[,2])) +
+  geom_bar(position="stack") +
+  theme_bw() + 
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
+  labs(title = "Where do you hear new government guidelines from?",
+       fill = "Age group", x = " ") +
+   scale_fill_manual(values=cbPalette)+
+  scale_x_discrete(guide = guide_axis(n.dodge=2))+
+  theme(plot.title = element_text(hjust = 0.5))
+dev.off()
+
+ggplot(dat, aes(x = dat[,3], fill = dat[,2])) +
+  geom_bar(position="stack") +
+  theme_bw() + 
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
+  labs(title = "Where do you hear new government guidelines from?",
+       fill = "Age group", x = " ") +
+   scale_fill_manual(values=cbPalette)+
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+
+```{r A3, message=F, warning=F}
+
+png("Q3 Answers.png")
+ggplot(dat, aes(x = dat[,4], fill = dat[,2])) +
+  geom_bar(position="stack") +
+  theme_bw() + 
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
+  labs(title = "Do you trust your source for government guidelines?",
+       fill = "Age group", x = " ") +
+   scale_fill_manual(values=cbPalette)+
+  theme(plot.title = element_text(hjust = 0.5))
+dev.off()
+
+ggplot(dat, aes(x = dat[,4], fill = dat[,2])) +
+  geom_bar(position="stack") +
+  theme_bw() + 
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
+  labs(title = "Do you trust your source for government guidelines?",
+       fill = "Age group", x = " ") +
+   scale_fill_manual(values=cbPalette)+
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+
+```{r A4, message=F, warning=F}
+
+dat$How.important.is.following.Government.guidelines.to.you. <- factor(dat$How.important.is.following.Government.guidelines.to.you.,
+                                                                       levels = c("Very important", "Important", "Moderately important", "Slightly important", "Not important"))
+png("Q4 Answers.png")
+ggplot(dat, aes(x = dat[,5], fill = dat[,2])) +
+  geom_bar(position="stack") +
+  theme_bw() + 
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
+  labs(title = "How important is following government guidelines to you?",
+       fill = "Age group", x  =  " ") +
+   scale_fill_manual(values=cbPalette)+
+  theme(plot.title = element_text(hjust = 0.5))+
+  scale_y_continuous(labels = scales::number_format(accuracy = 1))
+dev.off()
+
+ggplot(dat, aes(x = dat[,5], fill = dat[,2])) +
+  geom_bar(position="stack") +
+  theme_bw() + 
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
+  labs(title = "How important is following government guidelines to you?",
+       fill = "Age group", x  =  " ") +
+   scale_fill_manual(values=cbPalette)+
+  theme(plot.title = element_text(hjust = 0.5)) +
+  scale_y_continuous(labels = scales::number_format(accuracy = 1))
+```
+
+
+```{r A5, message=F, warning=F}
+
+png("Q5 Answers.png")
+ggplot(dat, aes(x = dat[,6], fill = dat[,2])) +
+  geom_bar(position="stack") +
+  theme_bw() + 
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
+  labs(title = "Do you understand new government guidelines?",
+       fill = "Age group",x = " ") +
+   scale_fill_manual(values=cbPalette)+
+  theme(plot.title = element_text(hjust = 0.5))
+dev.off()
+
+ggplot(dat, aes(x = dat[,6], fill = dat[,2])) +
+  geom_bar(position="stack") +
+  theme_bw() + 
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
+  labs(title = "Do you understand new government guidelines?",
+       fill = "Age group",x = " ") +
+   scale_fill_manual(values=cbPalette)+
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+
+
+```{r A6, message=F, warning=F}
+
+dat$How.quickly.do.you.hear.new.government.guidelines. <- factor(dat$How.quickly.do.you.hear.new.government.guidelines.,
+                                                                       levels = c("Within the same day","Next day", "2-6 days" ,"A week or more", "Other"))
+
+png("Q6 Answers.png")
+ggplot(dat, aes(x = dat[,7], fill = dat[,2])) +
+  geom_bar(position="stack") +
+  theme_bw() + 
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
+  labs(title = "How quickly do you hear new government guidelines?",
+       fill = "Age group", x = " ") +
+   scale_fill_manual(values=cbPalette)+
+  theme(plot.title = element_text(hjust = 0.5))
+dev.off()
+
+ggplot(dat, aes(x = dat[,7], fill = dat[,2])) +
+  geom_bar(position="stack") +
+  theme_bw() + 
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
+  labs(title = "How quickly do you hear new government guidelines?",
+       fill = "Age group", x = " ") +
+   scale_fill_manual(values=cbPalette)+
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+
+```{r A7, message=F, warning=F}
+print("Do you think there is poor communication from the government and why?")
+print(unique(dat$Do.you.think.there.is.poor.communication.from.the.government.and.why.))
+```
+```{r A7pt2, message=F, warning=F}
+print("Do you think the government want to support the Somali community? If not, why?")
+print(unique(dat$Do.you.think.the.government.want.to.support.the.Somali.community..If.not..why.))
+```
+
+
+```{r A8, message=F, warning=F}
+
+dat2 <- dat[,c(2,10)]
+dat2 <- dat2[-4,]
+dat2[10,2] <- "Yes"
+dat2[19,2] <- "No"
+
+png("Q8 Answers.png")
+ggplot(dat2, aes(x = dat2[,2], fill = dat2[,1])) +
+  geom_bar(position="stack") +
+  theme_bw() + 
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
+  labs(title = "Would you feel a dedicated app in Somali \n will help understand new government guidelines?",
+       fill = "Age group", x = " ") +
+   scale_fill_manual(values=cbPalette)+
+  theme(plot.title = element_text(hjust = 0.5))
+dev.off()
+
+ggplot(dat2, aes(x = dat2[,2], fill = dat2[,1])) +
+  geom_bar(position="stack") +
+  theme_bw() + 
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
+  labs(title = "Would you feel a dedicated app in Somali \n will help understand new government guidelines?",
+       fill = "Age group", x = " ") +
+   scale_fill_manual(values=cbPalette)+
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+```{r A9, message=F, warning=F}
+print("What features would you like to see in the app?")
+print(unique(dat$What.features.would.you.like.to.see.in.the.app.))
+```
